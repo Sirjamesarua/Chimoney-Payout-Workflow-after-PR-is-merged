@@ -17,7 +17,7 @@ jobs:
       - name: Notify Maintainer and Collaborators
         uses: actions/github-script@v5
         with:
-          token: ${{ secrets.MY_PERSONAL_ACCESS_TOKEN }}
+          github-token: ${{ secrets.MY_PERSONAL_ACCESS_TOKEN }}
           script: |
             // Comment in the PR
             github.rest.issues.createComment({
