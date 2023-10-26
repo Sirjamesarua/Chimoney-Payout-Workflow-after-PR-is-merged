@@ -17,7 +17,7 @@ jobs:
         run: echo "is_merged=${{ github.event.pull_request.merged }}" >> $GITHUB_OUTPUT
 
       - name: Notify Maintainers
-        if: steps.pr_merge.outputs.is_merged == 'true'
+        # if: steps.pr_merge.outputs.is_merged == 'true'
         uses: actions/github-script@v5
         with:
           script: |
