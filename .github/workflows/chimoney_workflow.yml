@@ -3,7 +3,7 @@ name: On PR Merge
 on:
   pull_request:
     types:
-      - closed
+      - synchronize
 
 jobs:
   on_merge:
