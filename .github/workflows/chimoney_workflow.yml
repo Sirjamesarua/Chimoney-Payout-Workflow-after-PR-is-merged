@@ -20,20 +20,16 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const maintainer = 'maintainer_username'; // GitHub username of the maintainer
-            const message = `Hello @${maintainer}, there's new activity in this repo!`; // The message to be posted
+            const maintainer = 'maintainer_username';
+            const message = `Hello @${maintainer}, there's new activity in this repo!`;
       
-            // Fetches the issue number from the context of the event that triggered the workflow. 
-            // If the event was a pull request, it uses the pull request number. 
-            // If it was a push event, it uses the commit SHA.
             const issue_number = context.payload.pull_request ? context.payload.pull_request.number : context.sha;
-      
-            // Defines the repository for which the comment should be created
             const repo = context.repo;
             repo.issue_number = issue_number;
       
-            // Uses the GitHub API to create a comment on the specified repository
-            github.issues.createComment({...repo, body: message});
+            // Using github.rest to access the Octokit REST API client
+            github.rest.issues.createComment({...repo, body: message});
+
 
       # - name: Notify Maintainers
       #   # if: steps.pr_merge.outputs.is_merged == 'true'
