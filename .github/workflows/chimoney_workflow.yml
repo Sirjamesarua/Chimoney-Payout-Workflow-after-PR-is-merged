@@ -31,23 +31,6 @@ jobs:
               body: message
             });
 
-            # // Get repository collaborators
-            # const collaborators = await github.repos.listCollaborators({
-            #   owner: ${{ github.repository.owner }},
-            #   repo: ${{ github.repository.repo }},
-            # });
-
-            # // Mention all collaborators
-            # const collaboratorMentions = collaborators.data.map(collaborator => `@${collaborator.login}`);
-            # const maintainerMessage = `@chimoney_bot send ${collaboratorMentions.join(' ')} \$2`;
-
-            # // Comment in the PR to mention the collaborators
-            # github.issues.createComment({
-            #   issue_number: ${{ github.event.pull_request.number }},
-            #   owner: ${{ github.repository.owner }},
-            #   repo: ${{ github.repository.repo }},
-            #   body: maintainerMessage
-            # });
 
 
       # - name: Initiate Chimoney Payout
