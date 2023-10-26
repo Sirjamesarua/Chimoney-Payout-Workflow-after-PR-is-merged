@@ -1,4 +1,4 @@
-name: Chimoney Workflow
+name: On PR Merge
 
 on:
   pull_request:
@@ -6,11 +6,12 @@ on:
       - closed
 
 jobs:
-  chimoney_payout:
+  on_merge:
     runs-on: ubuntu-latest
 
     steps:
       - name: Check PR Merge
-        id: pr_merge
-        run: echo "::set-output name=is_merged::${{ github.event.pull_request.merged }}"
-
+        if: github.event.pull_request.merged == true
+        run: |
+          echo "This workflow runs when a pull request is merged."
+          # You can add more steps to perform actions when a PR is merged.
