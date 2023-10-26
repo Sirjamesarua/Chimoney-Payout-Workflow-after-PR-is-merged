@@ -19,35 +19,39 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            // Mention the user who created the PR
-            const user = `@${{ github.event.pull_request.user.login }}`;
-            const message = ` PR Merged by ${user}. Please send them Chimoney to cash out to a bank account, gift card, and other options.`;           
+            // Wrap your script in an async function
+            async () => {
+              // Mention the user who created the PR
+              const user = `@${{ github.event.pull_request.user.login }}`;
+              const message = ` PR Merged by ${user}. Please send them Chimoney to cash out to a bank account, gift card, and other options.`;           
+      
+              // Comment in the PR
+              await github.issues.createComment({
+                issue_number: ${{ github.event.pull_request.number }},
+                owner: ${{ github.repository.owner }},
+                repo: ${{ github.repository.repo }},
+                body: message
+              });
+      
+              // Get repository collaborators
+              const collaborators = await github.repos.listCollaborators({
+                owner: ${{ github.repository.owner }},
+                repo: ${{ github.repository.repo }},
+              });
+      
+              // Mention all collaborators
+              const collaboratorMentions = collaborators.data.map(collaborator => `@${collaborator.login}`);
+              const maintainerMessage = `@chimoney_bot send ${collaboratorMentions.join(' ')} \\$2`;
+      
+              // Comment in the PR to mention the collaborators
+              await github.issues.createComment({
+                issue_number: ${{ github.event.pull_request.number }},
+                owner: ${{ github.repository.owner }},
+                repo: ${{ github.repository.repo }},
+                body: maintainerMessage
+              });
+            }
 
-            // Comment in the PR
-            github.issues.createComment({
-              issue_number: ${{ github.event.pull_request.number }},
-              owner: ${{ github.repository.owner }},
-              repo: ${{ github.repository.repo }},
-              body: message
-            });
-
-            // Get repository collaborators
-            const collaborators = await github.repos.listCollaborators({
-              owner: ${{ github.repository.owner }},
-              repo: ${{ github.repository.repo }}
-            });
-
-            // Mention all collaborators
-            const collaboratorMentions = collaborators.data.map(collaborator => `@${collaborator.login}`);
-            const maintainerMessage = `@chimoney_bot send ${collaboratorMentions.join(' ')} \$2`;
-
-            // Comment in the PR to mention the collaborators
-            github.issues.createComment({
-              issue_number: ${{ github.event.pull_request.number }},
-              owner: ${{ github.repository.owner }},
-              repo: ${{ github.repository.repo }},
-              body: maintainerMessage
-            });
 
       # - name: Initiate Chimoney Payout
       #   if: steps.pr_merge.outputs.is_merged == 'true'
