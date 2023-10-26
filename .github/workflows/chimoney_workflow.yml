@@ -34,7 +34,7 @@ jobs:
             // Get repository collaborators
             const collaborators = await github.repos.listCollaborators({
               owner: ${{ github.repository.owner }},
-              repo: ${{ github.repository.repo }},
+              repo: ${{ github.repository.repo }}
             });
 
             // Mention all collaborators
