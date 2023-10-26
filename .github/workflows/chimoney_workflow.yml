@@ -26,8 +26,8 @@ jobs:
             // Comment in the PR
             github.issues.createComment({
               issue_number: ${{ github.event.pull_request.number }},
-              owner: ${{ github.repository.owner }},
-              repo: ${{ github.repository.repo }},
+              owner: github.repository.owner,
+              repo: github.repository.repo,
               body: message
             });
 
