@@ -1,9 +1,6 @@
 name: On PR Merge
 
-on:
-  pull_request:
-    types:
-      - closed
+on: push
 
 jobs:
   on_merge:
