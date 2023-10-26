@@ -11,6 +11,7 @@ jobs:
 
     steps:
       - name: Check PR Merge
-        run: 
+        if: github.event.pull_request.merged == true
+        run: |
           echo "This workflow runs when a pull request is merged."
           # You can add more steps to perform actions when a PR is merged.
