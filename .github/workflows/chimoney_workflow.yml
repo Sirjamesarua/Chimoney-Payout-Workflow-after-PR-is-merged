@@ -22,12 +22,10 @@ jobs:
           script: |
             const maintainer = 'maintainer_username';
             const message = `Hello @${maintainer}, there's new activity in this repo!`;
-      
-            const issue_number = ${{ github.event.pull_request.number }}
-            const repo = ${{ github.repository.repo }}
+            const issue_number = ${{ github.event.pull_request.number }};
+            const repo = ${{ github.repository.repo }};
             repo.issue_number = issue_number;
-      
-            // Using github.rest to access the Octokit REST API client
+            
             github.rest.issues.createComment({...repo, body: message});
 
 
