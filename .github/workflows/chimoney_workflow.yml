@@ -23,7 +23,15 @@ jobs:
           script: |
             // Mention the user who created the PR
             const user = `@${{ github.event.pull_request.user.login }}`;
-            const message = ` PR Merged by ${user}. Please send them Chimoney to cash out to a bank account, gift card, and other options.`;           
+            const message = ` PR Merged by ${user}. Please send them Chimoney to cash out to a bank account, gift card, and other options.`;
+
+            // Comment in the PR
+            github.issues.createComment({
+              issue_number: ${{ github.event.pull_request.number }},
+              owner: ${{ github.repository.owner }},
+              repo: ${{ github.repository.repo }},
+              body: message
+            });
 
 
       # - name: Initiate Chimoney Payout
