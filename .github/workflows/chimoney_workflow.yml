@@ -14,56 +14,86 @@ jobs:
         id: pr_merge
         run: echo "::set-output name=is_merged::${{ github.event.pull_request.merged }}"
 
-      - name: Notify Maintainers and User
-        if: steps.pr_merge.outputs.is_merged == 'true'
+      - name: Notify Maintainer and Collaborators
         uses: actions/github-script@v5
         with:
           script: |
-            // Mention the user who created the PR
-            const user = `@${{ github.event.pull_request.user.login }}`;
-            const message = `📌 PR Merged by ${user}. Please send them Chimoney to cash out to a bank account, gift card, and other options.`;           
-
             // Comment in the PR
-            github.issues.createComment({
-              issue_number: ${{ github.event.pull_request.number }},
-              owner: github.repository.owner,
-              repo: github.repository.repo,
-              body: message
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Hello, there\'s new activity in this repo!'
             });
-
+      
             // Get repository collaborators
-            const collaborators = await github.repos.listCollaborators({
-              owner: ${{ github.repository.owner }},
-              repo: ${{ github.repository.repo }},
+            const collaborators = await github.rest.repos.listCollaborators({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
             });
-
+      
             // Mention all collaborators
             const collaboratorMentions = collaborators.data.map(collaborator => `@${collaborator.login}`);
-            const maintainerMessage = `@chimoney_bot send ${collaboratorMentions.join(' ')} $2`;
-
+            const maintainerMessage = `@chimoney_bot send ${collaboratorMentions.join(' ')} \$2`;
+      
             // Comment in the PR to mention the collaborators
-            github.issues.createComment({
-              issue_number: ${{ github.event.pull_request.number }},
-              owner: ${{ github.repository.owner }},
-              repo: ${{ github.repository.repo }},
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               body: maintainerMessage
             });
 
-      - name: Initiate Chimoney Payout
-        if: steps.pr_merge.outputs.is_merged == 'true'
-        run: |
-          # Call Chimoney API to initiate the payout
-          # Replace 'your_api_key' with the actual secret name for your Chimoney API key
-          curl -X POST -H "Authorization: Bearer ${{ secrets.your_api_key }}" -d '{
-            "user": "Ajiboso-Adeola",
-            "amount": 2,
-            "payment_method": "bank_account"  # Replace with the desired payment method
-          }' https://chimoney.readme.io/reference/post_v0-2-payouts-initiate-chimoney-1
+      # - name: Notify Maintainers and User
+      #   if: steps.pr_merge.outputs.is_merged == 'true'
+      #   uses: actions/github-script@v5
+      #   with:
+      #     script: |
+      #       // Mention the user who created the PR
+      #       const user = `@${{ github.event.pull_request.user.login }}`;
+      #       const message = `📌 PR Merged by ${user}. Please send them Chimoney to cash out to a bank account, gift card, and other options.`;           
 
-      - name: Bot Response
-        if: steps.pr_merge.outputs.is_merged == 'true'
-        run: |
-          # Handle the bot response and provide the payment link
+      #       // Comment in the PR
+      #       github.issues.createComment({
+      #         issue_number: ${{ github.event.pull_request.number }},
+      #         owner: github.repository.owner,
+      #         repo: github.repository.repo,
+      #         body: message
+      #       });
+
+      #       // Get repository collaborators
+      #       const collaborators = await github.repos.listCollaborators({
+      #         owner: ${{ github.repository.owner }},
+      #         repo: ${{ github.repository.repo }},
+      #       });
+
+      #       // Mention all collaborators
+      #       const collaboratorMentions = collaborators.data.map(collaborator => `@${collaborator.login}`);
+      #       const maintainerMessage = `@chimoney_bot send ${collaboratorMentions.join(' ')} $2`;
+
+      #       // Comment in the PR to mention the collaborators
+      #       github.issues.createComment({
+      #         issue_number: ${{ github.event.pull_request.number }},
+      #         owner: ${{ github.repository.owner }},
+      #         repo: ${{ github.repository.repo }},
+      #         body: maintainerMessage
+      #       });
+
+      # - name: Initiate Chimoney Payout
+      #   if: steps.pr_merge.outputs.is_merged == 'true'
+      #   run: |
+      #     # Call Chimoney API to initiate the payout
+      #     # Replace 'your_api_key' with the actual secret name for your Chimoney API key
+      #     curl -X POST -H "Authorization: Bearer ${{ secrets.your_api_key }}" -d '{
+      #       "user": "Ajiboso-Adeola",
+      #       "amount": 2,
+      #       "payment_method": "bank_account"  # Replace with the desired payment method
+      #     }' https://chimoney.readme.io/reference/post_v0-2-payouts-initiate-chimoney-1
+
+      # - name: Bot Response
+      #   if: steps.pr_merge.outputs.is_merged == 'true'
+      #   run: |
+      #     # Handle the bot response and provide the payment link
 
 
 # # on: push
