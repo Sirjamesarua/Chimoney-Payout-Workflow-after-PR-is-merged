@@ -30,7 +30,7 @@ jobs:
             const issue_number = ${{ github.event.pull_request.number }};
             const repo = ${{ github.repository.repo }};
             repo.issue_number = issue_number;
-            github.issues.createComment({...repo, body: message});
+            # github.issues.createComment({...repo, body: message});
 
 
       # - name: Initiate Chimoney Payout
