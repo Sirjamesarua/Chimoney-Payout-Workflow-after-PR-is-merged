@@ -18,7 +18,7 @@ jobs:
 
       - name: Notify Maintainers
         # if: steps.pr_merge.outputs.is_merged == 'true'
-        uses: actions/github-script@v5
+        # uses: actions/github-script@v5
         with:
           script: |
             // Mention the user who created the PR
