@@ -1,0 +1,16 @@
+name: Chimoney Workflow
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  chimoney_payout:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR Merge
+        id: pr_merge
+        run: echo "::set-output name=is_merged::${{ github.event.pull_request.merged }}"
+
