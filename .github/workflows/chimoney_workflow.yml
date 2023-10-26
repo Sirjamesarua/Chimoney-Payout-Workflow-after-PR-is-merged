@@ -5,21 +5,13 @@ on:
     types:
       - closed
 
-# jobs:
-#   on_merge:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Check PR Merge
-#         if: github.event.pull_request.merged == true
-#         run: |
-#           echo "This workflow runs when a pull request is merged."
-#           # You can add more steps to perform actions when a PR is merged.
-
 jobs:
-  echo_text:
+  on_merge:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Echo Text
-        run: echo "Hello, this is a simple echo message."
+      - name: Check PR Merge
+        if: github.event.pull_request.merged == true
+        run: |
+          echo "This workflow runs when a pull request is merged."
+          # You can add more steps to perform actions when a PR is merged.
