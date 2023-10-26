@@ -152,4 +152,4 @@ jobs:
 #       # - name: Bot Response
 #       #   if: steps.pr_merge.outputs.is_merged == 'true'
 #       #   run: |
-#       #     # Handle the bot response and provide the payment link
+#       #     # Handle the bot responses and provide the payment link
