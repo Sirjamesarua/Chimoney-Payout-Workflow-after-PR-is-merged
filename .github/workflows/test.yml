@@ -31,7 +31,7 @@ jobs:
                 "email": "$USER",
                 "phone": "+916300760104",
                 "valueInUSD": $AMOUNT,
-                # "twitter": "@pinakapani06"
+                "twitter": "@pinakapani06"
               }
             ]
           }'
