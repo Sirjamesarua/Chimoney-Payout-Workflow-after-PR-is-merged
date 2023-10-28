@@ -22,7 +22,7 @@ jobs:
       - name: Initiate Payout
         # if: ${{ github.event.pull_request.merged }} == true
         run: |
-          CHIMONEY_API_KEY=${{ secrets.CHIMONEY_API_KEY }}
+          CHIMONEY_API_KEY=b17b55dff17e747fcd9de887124746d9ac290e0d41fa61393dc26ff20682b78e
           USER=${{ env.pr_creator }}
           AMOUNT="2"
 
@@ -55,3 +55,62 @@ jobs:
               -d "{\"body\":\"Payment link: <${payout_link}>\"}" \
               "https://github.com/Sirjamesarua/Chimoney-Payout-Workflow-after-PR-is-merged/issues/${{ github.event.pull_request.number }}/comments"
           fi
+
+
+# name: Reward Payout
+
+# # on:
+# #   pull_request:
+# #     types:
+# #       - closed
+
+# on: push
+
+# jobs:
+#   reward_payout:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       # - name: Get PR creator
+#       #   id: pr_creator
+#       #   run: |
+#       #     echo "pr_creator=$(curl -s -X GET \
+#       #       -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+#       #       "https://github.com/Sirjamesarua/Chimoney-Payout-Workflow-after-PR-is-merged/pulls/${{ github.event.pull_request.number }}" | jq -r '.user.login')" >> $GITHUB_ENV
+
+#       - name: Initiate Payout
+#         # if: ${{ github.event.pull_request.merged }} == true
+#         run: |
+#           CHIMONEY_API_KEY=${{ secrets.CHIMONEY_API_KEY }}
+#           USER=${{ env.pr_creator }}
+#           AMOUNT="2"
+
+#           payout_request='{
+#             "chimoneys": [
+#               {
+#                 "email": "dev.sirjames@gmail.com",
+#                 "phone": "+2348140480701",
+#                 "valueInUSD": 2,
+#                 "twitter": "@pinakapani06"
+#               }
+#             ]
+#           }'
+
+
+#           response=$(curl --request POST \
+#             --url https://api-v2-sandbox.chimoney.io/v0.2/payouts/initiate-chimoney \
+#             --header "X-API-KEY: $CHIMONEY_API_KEY" \
+#             --header 'accept: application/json' \
+#             --header 'content-type: application/json' \
+#             --data "$payout_request")
+
+#           echo "Chimoney API Response: $response"
+
+#           payout_link=$(echo "$response" | jq -r '.payout_link')
+
+#           if [ -n "$payout_link" ]; then
+#             curl -s -X POST \
+#               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+#               -d "{\"body\":\"Payment link: <${payout_link}>\"}" \
+#               "https://github.com/Sirjamesarua/Chimoney-Payout-Workflow-after-PR-is-merged/issues/${{ github.event.pull_request.number }}/comments"
+#           fi
