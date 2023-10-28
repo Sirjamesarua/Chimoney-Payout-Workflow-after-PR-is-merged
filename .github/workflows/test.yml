@@ -20,39 +20,22 @@ jobs:
       - name: Initiate Payout
         if: ${{ github.event.pull_request.merged }} == true
         run: |
-          # CHIMONEY_API_KEY=${{ secrets.CHIMONEY_API_KEY }}
-          # USER=${{ env.pr_creator }}
-          # AMOUNT="2"
+          CHIMONEY_API_KEY=${{ secrets.CHIMONEY_API_KEY }}
+          USER=${{ env.pr_creator }}
+          AMOUNT="2"
 
-          # # Create a JSON object with the payout details
-          # payout_request='{
-          #   "chimoneys": [
-          #     {
-          #       "email": "$USER",
-          #       "phone": "+916300760104",
-          #       "valueInUSD": $AMOUNT,
-          #       "twitter": "@pinakapani06"
-          #     }
-          #   ]
-          # }'
-            CHIMONEY_API_KEY="af6f8382410ff388e2e750da0b9f5a93a8ccb9a36eb88ed324d18fcbb4469305"
-            USER= ${{ env.pr_creator }}
-            AMOUNT="2"
-            
-            # Create a JSON object with the payout details
-            payout_request="{
-              \"chimoneys\": [
-                {
-                  \"email\": \"$USER\",
-                  \"phone\": \"+916300760104\",
-                  \"valueInUSD\": $AMOUNT,
-                  # \"twitter\": \"@pinakapani06\"
-                }
-              ]
-            }"
+          payout_request='{
+            "chimoneys": [
+              {
+                "email": "$USER",
+                "phone": "+916300760104",
+                "valueInUSD": $AMOUNT,
+                "twitter": "@pinakapani06"
+              }
+            ]
+          }'
 
 
-          # Make a POST request to the Chimoney API to initiate a payout
           response=$(curl --request POST \
             --url https://api-v2-sandbox.chimoney.io/v0.2/payouts/initiate-chimoney \
             --header "X-API-KEY: $CHIMONEY_API_KEY" \
@@ -60,14 +43,11 @@ jobs:
             --header 'content-type: application/json' \
             --data "$payout_request")
 
-          # Log the response for debugging
           echo "Chimoney API Response: $response"
 
-          # Check if the response contains a payout link
           payout_link=$(echo "$response" | jq -r '.payout_link')
 
           if [ -n "$payout_link" ]; then
-            # Respond with the payment link
             curl -s -X POST \
               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -d "{\"body\":\"Payment link: <${payout_link}>\"}" \
