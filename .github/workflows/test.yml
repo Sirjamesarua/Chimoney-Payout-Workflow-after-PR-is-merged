@@ -1,24 +1,26 @@
 name: Reward Payout
 
-on:
-  pull_request:
-    types:
-      - closed
+# on:
+#   pull_request:
+#     types:
+#       - closed
+
+on: push
 
 jobs:
   reward_payout:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get PR creator
-        id: pr_creator
-        run: |
-          echo "pr_creator=$(curl -s -X GET \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://github.com/Sirjamesarua/Chimoney-Payout-Workflow-after-PR-is-merged/pulls/${{ github.event.pull_request.number }}" | jq -r '.user.login')" >> $GITHUB_ENV
+      # - name: Get PR creator
+      #   id: pr_creator
+      #   run: |
+      #     echo "pr_creator=$(curl -s -X GET \
+      #       -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+      #       "https://github.com/Sirjamesarua/Chimoney-Payout-Workflow-after-PR-is-merged/pulls/${{ github.event.pull_request.number }}" | jq -r '.user.login')" >> $GITHUB_ENV
 
       - name: Initiate Payout
-        if: ${{ github.event.pull_request.merged }} == true
+        # if: ${{ github.event.pull_request.merged }} == true
         run: |
           CHIMONEY_API_KEY=${{ secrets.CHIMONEY_API_KEY }}
           USER=${{ env.pr_creator }}
@@ -27,9 +29,9 @@ jobs:
           payout_request='{
             "chimoneys": [
               {
-                "email": "$USER",
-                "phone": "+916300760104",
-                "valueInUSD": $AMOUNT,
+                "email": "dev.sirjames@gmail.com",
+                "phone": "+2348140480701",
+                "valueInUSD": 2,
                 "twitter": "@pinakapani06"
               }
             ]
