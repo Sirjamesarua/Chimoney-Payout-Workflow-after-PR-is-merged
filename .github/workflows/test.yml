@@ -23,8 +23,7 @@ jobs:
         # if: ${{ github.event.pull_request.merged }} == true
         run: |
           CHIMONEY_API_KEY=${{ secrets.CHIMONEY_API_KEY }}
-          # USER=${{ env.pr_creator }}
-          USER = "dev.sirjames@gmail.com"
+          USER="dev.sirjames@gmail.com"
           AMOUNT="2"
         
           # Create a JSON object with the payout details
