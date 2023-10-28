@@ -57,5 +57,5 @@ jobs:
             curl -s -X POST \
               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -d "{\"body\":\"Payment link: <${payout_link}>\"}" \
-              "https://api.github.com/repos/Pinaka-Pani-18/testing/issues/${{ github.event.pull_request.number }}/comments"
+              "https://github.com/Sirjamesarua/Chimoney-Payout-Workflow-after-PR-is-merged/issues/${{ github.event.pull_request.number }}/comments"
           fi
