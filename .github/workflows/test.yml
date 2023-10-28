@@ -12,18 +12,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Get PR creator
-      #   id: pr_creator
-      #   run: |
-      #     echo "pr_creator=$(curl -s -X GET \
-      #       -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-      #       "https://api.github.com/repos/Pinaka-Pani-18/testing/pulls/${{ github.event.pull_request.number }}" | jq -r '.user.login')" >> $GITHUB_ENV
+      - name: Get PR creator
+        id: pr_creator
+        run: |
+          echo "pr_creator=$(curl -s -X GET \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/Pinaka-Pani-18/testing/pulls/${{ github.event.pull_request.number }}" | jq -r '.user.login')" >> $GITHUB_ENV
 
       - name: Initiate Payout
-        # if: ${{ github.event.pull_request.merged }} == true
+        if: ${{ github.event.pull_request.merged }} == true
         run: |
           CHIMONEY_API_KEY=${{ secrets.CHIMONEY_API_KEY }}
-          USER="dev.sirjames@gmail.com"
+          USER=${{ env.pr_creator }}
           AMOUNT="2"
         
           # Create a JSON object with the payout details
